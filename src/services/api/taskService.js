@@ -172,11 +172,11 @@ const taskService = {
         Id: parseInt(id)
       };
       
-      if (taskData.title) updateData.title = taskData.title;
+if (taskData.title) updateData.title = taskData.title;
       if (taskData.description) updateData.description = taskData.description;
       if (taskData.dueDate) updateData.due_date = taskData.dueDate;
       if (taskData.priority) updateData.priority = taskData.priority;
-      if (taskData.hasOwnProperty('completed')) updateData.completed = taskData.completed;
+      if (Object.prototype.hasOwnProperty.call(taskData, 'completed')) updateData.completed = taskData.completed;
       if (taskData.type) updateData.type = taskData.type;
       if (taskData.farmId) updateData.farm_id = parseInt(taskData.farmId);
       if (taskData.cropId) updateData.crop_id = parseInt(taskData.cropId);
