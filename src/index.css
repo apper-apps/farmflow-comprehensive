@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "react-toastify/dist/ReactToastify.css";
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-forest-600 to-forest-700 text-white px-6 py-3 rounded-lg font-medium shadow-lg hover:from-forest-700 hover:to-forest-800 hover:shadow-xl transform hover:scale-105 transition-all duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-forest-700 border-2 border-forest-600 px-6 py-3 rounded-lg font-medium hover:bg-forest-50 hover:border-forest-700 transform hover:scale-105 transition-all duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200;
+  }
+  
+  .status-badge {
+    @apply px-3 py-1 rounded-full text-sm font-medium inline-flex items-center gap-2;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-forest-500 focus:outline-none transition-colors duration-200;
+  }
+}
+
+.Toastify__toast-container {
+  @apply top-4 right-4;
+}
+
+.Toastify__toast {
+  @apply rounded-lg shadow-lg;
+  min-height: 60px;
+}
+
+.Toastify__toast--success {
+  @apply bg-gradient-to-r from-green-500 to-green-600 text-white;
+}
+
+.Toastify__toast--error {
+  @apply bg-gradient-to-r from-red-500 to-red-600 text-white;
+}
+
+.Toastify__toast--warning {
+  @apply bg-gradient-to-r from-harvest-500 to-harvest-600 text-white;
+}
+
+.Toastify__toast--info {
+  @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white;
+}
+
+.Toastify__progress-bar--success {
+  @apply bg-green-200;
+}
+
+.Toastify__progress-bar--error {
+  @apply bg-red-200;
+}
+
+.Toastify__progress-bar--warning {
+  @apply bg-harvest-200;
+}
+
+.Toastify__progress-bar--info {
+  @apply bg-blue-200;
+}

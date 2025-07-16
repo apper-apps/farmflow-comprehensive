@@ -1,0 +1,42 @@
+[
+  {
+    "date": "2024-06-15T00:00:00Z",
+    "tempHigh": 75,
+    "tempLow": 58,
+    "condition": "sunny",
+    "precipitation": 10,
+    "humidity": 45
+  },
+  {
+    "date": "2024-06-16T00:00:00Z",
+    "tempHigh": 78,
+    "tempLow": 61,
+    "condition": "partly cloudy",
+    "precipitation": 20,
+    "humidity": 52
+  },
+  {
+    "date": "2024-06-17T00:00:00Z",
+    "tempHigh": 72,
+    "tempLow": 56,
+    "condition": "rainy",
+    "precipitation": 80,
+    "humidity": 78
+  },
+  {
+    "date": "2024-06-18T00:00:00Z",
+    "tempHigh": 70,
+    "tempLow": 54,
+    "condition": "cloudy",
+    "precipitation": 40,
+    "humidity": 65
+  },
+  {
+    "date": "2024-06-19T00:00:00Z",
+    "tempHigh": 76,
+    "tempLow": 59,
+    "condition": "sunny",
+    "precipitation": 5,
+    "humidity": 42
+  }
+]

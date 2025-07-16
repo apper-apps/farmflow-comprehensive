@@ -1,0 +1,57 @@
+[
+  {
+    "Id": 1,
+    "farmId": "1",
+    "name": "Tomatoes",
+    "variety": "Roma",
+    "plantingDate": "2024-03-15T00:00:00Z",
+    "expectedHarvestDate": "2024-07-15T00:00:00Z",
+    "status": "growing",
+    "area": 25,
+    "notes": "Staked and mulched"
+  },
+  {
+    "Id": 2,
+    "farmId": "1",
+    "name": "Corn",
+    "variety": "Sweet Yellow",
+    "plantingDate": "2024-04-01T00:00:00Z",
+    "expectedHarvestDate": "2024-08-01T00:00:00Z",
+    "status": "growing",
+    "area": 50,
+    "notes": "Irrigated field"
+  },
+  {
+    "Id": 3,
+    "farmId": "2",
+    "name": "Apples",
+    "variety": "Honeycrisp",
+    "plantingDate": "2024-04-10T00:00:00Z",
+    "expectedHarvestDate": "2024-09-10T00:00:00Z",
+    "status": "planted",
+    "area": 30,
+    "notes": "Young trees, first year"
+  },
+  {
+    "Id": 4,
+    "farmId": "1",
+    "name": "Lettuce",
+    "variety": "Romaine",
+    "plantingDate": "2024-05-01T00:00:00Z",
+    "expectedHarvestDate": "2024-06-15T00:00:00Z",
+    "status": "ready",
+    "area": 10,
+    "notes": "Greenhouse grown"
+  },
+  {
+    "Id": 5,
+    "farmId": "3",
+    "name": "Wheat",
+    "variety": "Winter Wheat",
+    "plantingDate": "2024-02-01T00:00:00Z",
+    "expectedHarvestDate": "2024-07-01T00:00:00Z",
+    "status": "growing",
+    "area": 200,
+    "notes": "Dry land farming"
+  }
+]

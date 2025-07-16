@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "farmId": "1",
+    "type": "expense",
+    "category": "Seeds",
+    "amount": 250.00,
+    "description": "Roma tomato seeds",
+    "date": "2024-03-10T00:00:00Z",
+    "paymentMethod": "Credit Card"
+  },
+  {
+    "Id": 2,
+    "farmId": "1",
+    "type": "expense",
+    "category": "Fertilizer",
+    "amount": 480.00,
+    "description": "Organic fertilizer for corn",
+    "date": "2024-04-05T00:00:00Z",
+    "paymentMethod": "Cash"
+  },
+  {
+    "Id": 3,
+    "farmId": "1",
+    "type": "income",
+    "category": "Crop Sales",
+    "amount": 1200.00,
+    "description": "Lettuce harvest sales",
+    "date": "2024-05-15T00:00:00Z",
+    "paymentMethod": "Check"
+  },
+  {
+    "Id": 4,
+    "farmId": "2",
+    "type": "expense",
+    "category": "Equipment",
+    "amount": 350.00,
+    "description": "Pruning shears and tools",
+    "date": "2024-04-20T00:00:00Z",
+    "paymentMethod": "Credit Card"
+  },
+  {
+    "Id": 5,
+    "farmId": "3",
+    "type": "expense",
+    "category": "Fuel",
+    "amount": 180.00,
+    "description": "Diesel for tractor",
+    "date": "2024-05-01T00:00:00Z",
+    "paymentMethod": "Cash"
+  },
+  {
+    "Id": 6,
+    "farmId": "1",
+    "type": "income",
+    "category": "Crop Sales",
+    "amount": 2400.00,
+    "description": "Tomato harvest sales",
+    "date": "2024-06-01T00:00:00Z",
+    "paymentMethod": "Bank Transfer"
+  }
+]

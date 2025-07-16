@@ -1,0 +1,57 @@
+[
+  {
+    "Id": 1,
+    "farmId": "1",
+    "cropId": "1",
+    "title": "Water tomatoes",
+    "description": "Deep watering for Roma tomatoes",
+    "dueDate": "2024-06-15T08:00:00Z",
+    "priority": "high",
+    "completed": false,
+    "type": "watering"
+  },
+  {
+    "Id": 2,
+    "farmId": "1",
+    "cropId": "2",
+    "title": "Fertilize corn",
+    "description": "Apply nitrogen fertilizer to corn field",
+    "dueDate": "2024-06-16T10:00:00Z",
+    "priority": "medium",
+    "completed": false,
+    "type": "fertilizing"
+  },
+  {
+    "Id": 3,
+    "farmId": "1",
+    "cropId": "4",
+    "title": "Harvest lettuce",
+    "description": "Harvest ready romaine lettuce",
+    "dueDate": "2024-06-14T06:00:00Z",
+    "priority": "high",
+    "completed": false,
+    "type": "harvesting"
+  },
+  {
+    "Id": 4,
+    "farmId": "2",
+    "cropId": "3",
+    "title": "Prune apple trees",
+    "description": "Summer pruning of young apple trees",
+    "dueDate": "2024-06-20T09:00:00Z",
+    "priority": "low",
+    "completed": false,
+    "type": "pruning"
+  },
+  {
+    "Id": 5,
+    "farmId": "3",
+    "cropId": "5",
+    "title": "Weed wheat field",
+    "description": "Remove weeds from wheat field",
+    "dueDate": "2024-06-12T07:00:00Z",
+    "priority": "medium",
+    "completed": true,
+    "type": "weeding"
+  }
+]
