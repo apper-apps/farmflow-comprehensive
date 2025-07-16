@@ -10,6 +10,7 @@ import Farms from "@/components/pages/Farms";
 import Crops from "@/components/pages/Crops";
 import Tasks from "@/components/pages/Tasks";
 import Finance from "@/components/pages/Finance";
+import Reports from "@/components/pages/Reports";
 import Weather from "@/components/pages/Weather";
 import Login from "@/components/pages/Login";
 import Signup from "@/components/pages/Signup";
@@ -146,7 +147,8 @@ function AppContent() {
             <Route path="farms" element={<Farms />} />
             <Route path="crops" element={<Crops />} />
             <Route path="tasks" element={<Tasks />} />
-            <Route path="finance" element={<Finance />} />
+<Route path="finance" element={<Finance />} />
+            <Route path="reports" element={<Reports />} />
             <Route path="weather" element={<Weather />} />
           </Route>
         </Routes>
