@@ -18,9 +18,12 @@ const Badge = React.forwardRef(({
     harvested: "bg-gray-100 text-gray-700",
     high: "bg-red-100 text-red-700",
     medium: "bg-harvest-100 text-harvest-700",
-    low: "bg-green-100 text-green-700",
+low: "bg-green-100 text-green-700",
     income: "bg-green-100 text-green-700",
-    expense: "bg-red-100 text-red-700"
+    expense: "bg-red-100 text-red-700",
+    urgent: "bg-red-100 text-red-700 ring-2 ring-red-200",
+    warning: "bg-harvest-100 text-harvest-700 ring-2 ring-harvest-200",
+    info: "bg-blue-100 text-blue-700 ring-2 ring-blue-200"
   };
 
   const sizes = {

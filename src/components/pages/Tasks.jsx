@@ -23,7 +23,13 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
-  const [editingTask, setEditingTask] = useState(null);
+const [editingTask, setEditingTask] = useState(null);
+  const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
+  const [notificationPreferences, setNotificationPreferences] = useState({
+    enabled: true,
+    reminderTimes: ["1day", "1hour"],
+    highPriorityOnly: false
+  });
   const [filterStatus, setFilterStatus] = useState("all");
   const [formData, setFormData] = useState({
     farmId: "",
@@ -33,7 +39,14 @@ const Tasks = () => {
     dueDate: "",
     priority: "medium",
     type: "general"
-  });
+});
+
+  const reminderOptions = [
+    { value: "1hour", label: "1 Hour Before" },
+    { value: "1day", label: "1 Day Before" },
+    { value: "3days", label: "3 Days Before" },
+    { value: "1week", label: "1 Week Before" }
+  ];
 
   const taskTypes = [
     { value: "general", label: "General" },
@@ -210,13 +223,23 @@ const Tasks = () => {
           <p className="text-gray-600 mt-1">Manage your farm activities and schedules</p>
         </motion.div>
         
-        <Button
-          onClick={() => setShowForm(true)}
-          className="flex items-center gap-2"
-        >
-          <ApperIcon name="Plus" size={20} />
-          Add Task
-        </Button>
+<div className="flex items-center gap-2">
+          <Button
+            onClick={() => setShowNotificationPrefs(true)}
+            variant="secondary"
+            className="flex items-center gap-2"
+          >
+            <ApperIcon name="Bell" size={20} />
+            Notifications
+          </Button>
+          <Button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-2"
+          >
+            <ApperIcon name="Plus" size={20} />
+            Add Task
+          </Button>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -351,6 +374,107 @@ const Tasks = () => {
                 </Button>
               </div>
             </form>
+          </motion.div>
+        </motion.div>
+)}
+
+      {/* Notification Preferences Modal */}
+      {showNotificationPrefs && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-xl p-6 w-full max-w-md"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Notification Preferences
+            </h2>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-gray-700">
+                  Enable Notifications
+                </label>
+                <input
+                  type="checkbox"
+                  checked={notificationPreferences.enabled}
+                  onChange={(e) => setNotificationPreferences({
+                    ...notificationPreferences,
+                    enabled: e.target.checked
+                  })}
+                  className="w-4 h-4 text-forest-600 rounded focus:ring-forest-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-between">
+                <label className="text-sm font-medium text-gray-700">
+                  High Priority Tasks Only
+                </label>
+                <input
+                  type="checkbox"
+                  checked={notificationPreferences.highPriorityOnly}
+                  onChange={(e) => setNotificationPreferences({
+                    ...notificationPreferences,
+                    highPriorityOnly: e.target.checked
+                  })}
+                  className="w-4 h-4 text-forest-600 rounded focus:ring-forest-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Reminder Times
+                </label>
+                <div className="space-y-2">
+                  {reminderOptions.map(option => (
+                    <div key={option.value} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={option.value}
+                        checked={notificationPreferences.reminderTimes.includes(option.value)}
+                        onChange={(e) => {
+                          const reminderTimes = e.target.checked
+                            ? [...notificationPreferences.reminderTimes, option.value]
+                            : notificationPreferences.reminderTimes.filter(time => time !== option.value);
+                          setNotificationPreferences({
+                            ...notificationPreferences,
+                            reminderTimes
+                          });
+                        }}
+                        className="w-4 h-4 text-forest-600 rounded focus:ring-forest-500"
+                      />
+                      <label htmlFor={option.value} className="ml-2 text-sm text-gray-700">
+                        {option.label}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-4 pt-6">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => setShowNotificationPrefs(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowNotificationPrefs(false);
+                  toast.success("Notification preferences updated!");
+                }}
+                className="flex-1"
+              >
+                Save Preferences
+              </Button>
+            </div>
           </motion.div>
         </motion.div>
       )}

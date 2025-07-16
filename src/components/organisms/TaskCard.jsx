@@ -24,9 +24,25 @@ const TaskCard = ({ task, onComplete, onEdit, onDelete }) => {
     }
   };
 
-  const isOverdue = new Date(task.dueDate) < new Date();
+const isOverdue = new Date(task.dueDate) < new Date();
   const isToday = format(new Date(task.dueDate), "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
-
+  
+  const getNotificationStatus = () => {
+    if (task.completed || isOverdue) return null;
+    
+    const now = new Date();
+    const dueDate = new Date(task.dueDate);
+    const timeDiff = dueDate.getTime() - now.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    const hoursDiff = Math.ceil(timeDiff / (1000 * 3600));
+    
+    if (hoursDiff <= 1) return { type: "urgent", text: "Due Soon!" };
+    if (daysDiff <= 1) return { type: "warning", text: "Due Tomorrow" };
+    if (daysDiff <= 3) return { type: "info", text: "Due Soon" };
+    return null;
+  };
+  
+  const notificationStatus = getNotificationStatus();
   return (
     <motion.div
       className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${
@@ -58,7 +74,12 @@ const TaskCard = ({ task, onComplete, onEdit, onDelete }) => {
             <p className="text-sm text-gray-600">{task.description}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
+          {notificationStatus && (
+            <Badge variant={notificationStatus.type} size="sm" className="animate-pulse">
+              {notificationStatus.text}
+            </Badge>
+          )}
           <button
             onClick={() => onEdit(task)}
             className="p-2 text-gray-500 hover:text-forest-600 hover:bg-forest-50 rounded-lg transition-colors"
@@ -83,8 +104,13 @@ const TaskCard = ({ task, onComplete, onEdit, onDelete }) => {
             }`}>
               {format(new Date(task.dueDate), "MMM d, yyyy")}
             </span>
-            {isOverdue && <Badge variant="high">Overdue</Badge>}
+{isOverdue && <Badge variant="high">Overdue</Badge>}
             {isToday && <Badge variant="medium">Today</Badge>}
+            {notificationStatus && (
+              <Badge variant={notificationStatus.type} size="sm" icon="Bell">
+                {notificationStatus.text}
+              </Badge>
+            )}
           </div>
         </div>
         

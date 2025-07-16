@@ -80,3 +80,12 @@
 .Toastify__progress-bar--info {
   @apply bg-blue-200;
 }
+
+.notification-badge {
+  @apply animate-pulse;
+}
+
+@keyframes notification-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
