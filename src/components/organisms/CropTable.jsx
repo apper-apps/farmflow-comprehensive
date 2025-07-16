@@ -14,9 +14,17 @@ const CropTable = ({ crops, onEdit, onDelete, onHarvest }) => {
     }
   };
 
-  const getDaysUntilHarvest = (harvestDate) => {
+const getDaysUntilHarvest = (harvestDate) => {
+    if (!harvestDate) return 'Not set';
+    
     const today = new Date();
     const harvest = new Date(harvestDate);
+    
+    // Check if the date is valid
+    if (isNaN(harvest.getTime())) {
+      return 'Invalid date';
+    }
+    
     const diffTime = harvest - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
@@ -55,15 +63,21 @@ const CropTable = ({ crops, onEdit, onDelete, onHarvest }) => {
                   </div>
                 </td>
                 <td className="px-6 py-4 text-gray-700">{crop.variety}</td>
-                <td className="px-6 py-4 text-gray-700">
-                  {format(new Date(crop.plantingDate), "MMM d, yyyy")}
+<td className="px-6 py-4 text-gray-700">
+                  {crop.plantingDate && !isNaN(new Date(crop.plantingDate).getTime()) 
+                    ? format(new Date(crop.plantingDate), "MMM d, yyyy")
+                    : "Not set"}
                 </td>
                 <td className="px-6 py-4">
-                  <div className="text-gray-700">
-                    {format(new Date(crop.expectedHarvestDate), "MMM d, yyyy")}
+<div className="text-gray-700">
+                    {crop.expectedHarvestDate && !isNaN(new Date(crop.expectedHarvestDate).getTime())
+                      ? format(new Date(crop.expectedHarvestDate), "MMM d, yyyy")
+                      : "Not set"}
                   </div>
                   <div className="text-sm text-gray-500">
-                    {getDaysUntilHarvest(crop.expectedHarvestDate)} days
+                    {typeof getDaysUntilHarvest(crop.expectedHarvestDate) === 'number'
+                      ? `${getDaysUntilHarvest(crop.expectedHarvestDate)} days`
+                      : getDaysUntilHarvest(crop.expectedHarvestDate)}
                   </div>
                 </td>
                 <td className="px-6 py-4">
