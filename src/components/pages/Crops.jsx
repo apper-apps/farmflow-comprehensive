@@ -66,8 +66,8 @@ const Crops = () => {
   }, []);
 
   const handleSearch = (searchTerm) => {
-    const filtered = crops.filter(crop =>
-      crop.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+const filtered = crops.filter(crop =>
+      crop.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       crop.variety.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredCrops(filtered);
@@ -111,11 +111,11 @@ const Crops = () => {
   const handleEdit = (crop) => {
     setEditingCrop(crop);
     setFormData({
-      farmId: crop.farmId,
-      name: crop.name,
+farmId: crop.farm_id,
+      name: crop.Name,
       variety: crop.variety,
-      plantingDate: crop.plantingDate.split("T")[0],
-      expectedHarvestDate: crop.expectedHarvestDate.split("T")[0],
+plantingDate: crop.planting_date.split("T")[0],
+      expectedHarvestDate: crop.expected_harvest_date.split("T")[0],
       status: crop.status,
       area: crop.area.toString(),
       notes: crop.notes
@@ -206,7 +206,7 @@ const Crops = () => {
                 <Select
                   value={formData.farmId}
                   onChange={(e) => setFormData({...formData, farmId: e.target.value})}
-                  options={farms.map(farm => ({ value: farm.Id.toString(), label: farm.name }))}
+options={farms.map(farm => ({ value: farm.Id.toString(), label: farm.Name }))}
                   placeholder="Select a farm"
                   required
                 />

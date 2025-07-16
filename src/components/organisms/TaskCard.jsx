@@ -24,14 +24,14 @@ const TaskCard = ({ task, onComplete, onEdit, onDelete }) => {
     }
   };
 
-const isOverdue = new Date(task.dueDate) < new Date();
-  const isToday = format(new Date(task.dueDate), "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
+const isOverdue = new Date(task.due_date) < new Date();
+  const isToday = format(new Date(task.due_date), "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
   
   const getNotificationStatus = () => {
     if (task.completed || isOverdue) return null;
     
     const now = new Date();
-    const dueDate = new Date(task.dueDate);
+const dueDate = new Date(task.due_date);
     const timeDiff = dueDate.getTime() - now.getTime();
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
     const hoursDiff = Math.ceil(timeDiff / (1000 * 3600));
@@ -102,7 +102,7 @@ const isOverdue = new Date(task.dueDate) < new Date();
             <span className={`text-sm font-medium ${
               isOverdue ? "text-red-600" : isToday ? "text-harvest-600" : "text-gray-700"
             }`}>
-              {format(new Date(task.dueDate), "MMM d, yyyy")}
+{format(new Date(task.due_date), "MMM d, yyyy")}
             </span>
 {isOverdue && <Badge variant="high">Overdue</Badge>}
             {isToday && <Badge variant="medium">Today</Badge>}

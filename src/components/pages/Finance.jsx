@@ -148,13 +148,13 @@ const Finance = () => {
   const handleEdit = (transaction) => {
     setEditingTransaction(transaction);
     setFormData({
-      farmId: transaction.farmId,
+farmId: transaction.farm_id,
       type: transaction.type,
       category: transaction.category,
       amount: transaction.amount.toString(),
       description: transaction.description,
       date: transaction.date.split("T")[0],
-      paymentMethod: transaction.paymentMethod
+paymentMethod: transaction.payment_method
     });
     setShowForm(true);
   };
@@ -282,7 +282,7 @@ const Finance = () => {
                 <Select
                   value={formData.farmId}
                   onChange={(e) => setFormData({...formData, farmId: e.target.value})}
-                  options={farms.map(farm => ({ value: farm.Id.toString(), label: farm.name }))}
+options={farms.map(farm => ({ value: farm.Id.toString(), label: farm.Name }))}
                   placeholder="Select a farm"
                   required
                 />

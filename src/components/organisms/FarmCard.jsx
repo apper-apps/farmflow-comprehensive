@@ -17,7 +17,7 @@ const FarmCard = ({ farm, onEdit, onDelete, onView, cropsCount = 0 }) => {
               <ApperIcon name="MapPin" size={24} className="text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">{farm.name}</h3>
+<h3 className="text-lg font-semibold text-gray-900">{farm.Name}</h3>
               <p className="text-sm text-gray-600">{farm.location}</p>
             </div>
           </div>
@@ -41,7 +41,7 @@ const FarmCard = ({ farm, onEdit, onDelete, onView, cropsCount = 0 }) => {
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-600">Size</span>
             <Badge variant="default">
-              {farm.size} {farm.sizeUnit}
+{farm.size} {farm.size_unit}
             </Badge>
           </div>
           

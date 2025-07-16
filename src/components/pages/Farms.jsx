@@ -61,8 +61,8 @@ const Farms = () => {
   }, []);
 
   const handleSearch = (searchTerm) => {
-    const filtered = farms.filter(farm =>
-      farm.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+const filtered = farms.filter(farm =>
+      farm.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       farm.location.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredFarms(filtered);
@@ -97,9 +97,9 @@ const Farms = () => {
   const handleEdit = (farm) => {
     setEditingFarm(farm);
     setFormData({
-      name: farm.name,
+name: farm.Name,
       size: farm.size.toString(),
-      sizeUnit: farm.sizeUnit,
+      sizeUnit: farm.size_unit,
       location: farm.location
     });
     setShowForm(true);
@@ -119,7 +119,7 @@ const Farms = () => {
   };
 
   const getCropsCount = (farmId) => {
-    return crops.filter(crop => crop.farmId === farmId.toString()).length;
+return crops.filter(crop => crop.farm_id === farmId.toString()).length;
   };
 
   if (loading) {

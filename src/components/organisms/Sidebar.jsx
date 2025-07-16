@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
+import { AuthContext } from "@/App";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { logout } = useContext(AuthContext);
 
   const menuItems = [
     { path: "/", label: "Dashboard", icon: "LayoutDashboard" },
@@ -56,7 +58,7 @@ const Sidebar = () => {
           </div>
         </div>
         
-        <nav className="p-4 space-y-2">
+<nav className="p-4 space-y-2">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
@@ -73,6 +75,14 @@ const Sidebar = () => {
               <span className="font-medium">{item.label}</span>
             </NavLink>
           ))}
+          
+          <button
+            onClick={logout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-gray-700 hover:bg-red-50 hover:text-red-600 mt-4"
+          >
+            <ApperIcon name="LogOut" size={20} />
+            <span className="font-medium">Logout</span>
+          </button>
         </nav>
       </aside>
 
@@ -104,7 +114,7 @@ const Sidebar = () => {
                 </div>
               </div>
               
-              <nav className="p-4 space-y-2">
+<nav className="p-4 space-y-2">
                 {menuItems.map((item) => (
                   <NavLink
                     key={item.path}
@@ -122,6 +132,17 @@ const Sidebar = () => {
                     <span className="font-medium">{item.label}</span>
                   </NavLink>
                 ))}
+                
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    logout();
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-gray-700 hover:bg-red-50 hover:text-red-600 mt-4"
+                >
+                  <ApperIcon name="LogOut" size={20} />
+                  <span className="font-medium">Logout</span>
+                </button>
               </nav>
             </motion.aside>
           </>

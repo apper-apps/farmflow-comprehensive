@@ -50,22 +50,22 @@ const Weather = () => {
         });
       }
       
-      if (day.tempHigh > 85) {
+if (day.temp_high > 85) {
         insights.push({
           type: "info",
           icon: "Sun",
           title: "Hot Weather Alert",
-          description: `High temperature of ${day.tempHigh}°F expected`,
+description: `High temperature of ${day.temp_high}°F expected`,
           action: "Ensure adequate irrigation and livestock shade"
         });
       }
       
-      if (day.tempLow < 40) {
+if (day.temp_low < 40) {
         insights.push({
           type: "warning",
           icon: "Snowflake",
           title: "Cold Weather Warning",
-          description: `Low temperature of ${day.tempLow}°F expected`,
+description: `Low temperature of ${day.temp_low}°F expected`,
           action: "Protect sensitive crops from frost"
         });
       }
@@ -105,21 +105,21 @@ const Weather = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold mb-2">Today's Weather</h2>
-              <p className="text-forest-100 mb-4">{todayWeather.condition}</p>
+<p className="text-forest-100 mb-4">{todayWeather.condition}</p>
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Thermometer" size={20} />
                   <span className="text-lg font-semibold">
-                    {todayWeather.tempHigh}°/{todayWeather.tempLow}°F
+{todayWeather.temp_high}°/{todayWeather.temp_low}°F
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Droplets" size={20} />
-                  <span className="text-lg font-semibold">{todayWeather.precipitation}%</span>
+<span className="text-lg font-semibold">{todayWeather.precipitation}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Wind" size={20} />
-                  <span className="text-lg font-semibold">{todayWeather.humidity}%</span>
+<span className="text-lg font-semibold">{todayWeather.humidity}%</span>
                 </div>
               </div>
             </div>

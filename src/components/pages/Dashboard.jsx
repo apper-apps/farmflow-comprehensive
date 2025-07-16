@@ -78,12 +78,12 @@ const Dashboard = () => {
 
   const activeCrops = crops.filter(crop => crop.status !== "harvested");
   const todaysTasks = tasks.filter(task => {
-    const taskDate = format(new Date(task.dueDate), "yyyy-MM-dd");
+const taskDate = format(new Date(task.due_date), "yyyy-MM-dd");
     const today = format(new Date(), "yyyy-MM-dd");
     return taskDate === today && !task.completed;
   });
   const overdueTasks = tasks.filter(task => {
-    const taskDate = new Date(task.dueDate);
+const taskDate = new Date(task.due_date);
     const today = new Date();
     return taskDate < today && !task.completed;
   });
@@ -96,7 +96,7 @@ const Dashboard = () => {
     .filter(t => t.type === "expense")
     .reduce((sum, t) => sum + t.amount, 0);
 
-  const recentTransactions = transactions
+const recentTransactions = transactions
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
 

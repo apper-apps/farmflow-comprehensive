@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
-import Select from "@/components/atoms/Select";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import TaskCard from "@/components/organisms/TaskCard";
 import FormField from "@/components/molecules/FormField";
 import SearchBar from "@/components/molecules/SearchBar";
-import TaskCard from "@/components/organisms/TaskCard";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import Empty from "@/components/ui/Empty";
+import Select from "@/components/atoms/Select";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
 import taskService from "@/services/api/taskService";
 import farmService from "@/services/api/farmService";
 import cropService from "@/services/api/cropService";
@@ -23,7 +23,7 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
-const [editingTask, setEditingTask] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
   const [showNotificationPrefs, setShowNotificationPrefs] = useState(false);
   const [notificationPreferences, setNotificationPreferences] = useState({
     enabled: true,
@@ -39,7 +39,7 @@ const [editingTask, setEditingTask] = useState(null);
     dueDate: "",
     priority: "medium",
     type: "general"
-});
+  });
 
   const reminderOptions = [
     { value: "1hour", label: "1 Hour Before" },
@@ -78,7 +78,6 @@ const [editingTask, setEditingTask] = useState(null);
       setTasks(tasksData);
       setFarms(farmsData);
       setCrops(cropsData);
-      setFilteredTasks(tasksData);
     } catch (err) {
       setError(err.message);
       toast.error("Failed to load tasks");
@@ -96,8 +95,8 @@ const [editingTask, setEditingTask] = useState(null);
 
     if (filterStatus !== "all") {
       filtered = filtered.filter(task => {
-        const isCompleted = task.completed;
-        const isOverdue = new Date(task.dueDate) < new Date() && !isCompleted;
+const isCompleted = task.completed;
+        const isOverdue = new Date(task.due_date) < new Date() && !isCompleted;
         
         switch (filterStatus) {
           case "completed":
@@ -160,11 +159,11 @@ const [editingTask, setEditingTask] = useState(null);
   const handleEdit = (task) => {
     setEditingTask(task);
     setFormData({
-      farmId: task.farmId,
-      cropId: task.cropId,
+farmId: task.farm_id,
+      cropId: task.crop_id,
       title: task.title,
       description: task.description,
-      dueDate: task.dueDate.split("T")[0],
+      dueDate: task.due_date.split("T")[0],
       priority: task.priority,
       type: task.type
     });
@@ -201,7 +200,7 @@ const [editingTask, setEditingTask] = useState(null);
 
   const getFilteredCrops = () => {
     if (!formData.farmId) return [];
-    return crops.filter(crop => crop.farmId === formData.farmId);
+return crops.filter(crop => crop.farm_id === formData.farmId);
   };
 
   if (loading) {
@@ -284,7 +283,7 @@ const [editingTask, setEditingTask] = useState(null);
                 <Select
                   value={formData.farmId}
                   onChange={(e) => setFormData({...formData, farmId: e.target.value, cropId: ""})}
-                  options={farms.map(farm => ({ value: farm.Id.toString(), label: farm.name }))}
+options={farms.map(farm => ({ value: farm.Id.toString(), label: farm.Name }))}
                   placeholder="Select a farm"
                   required
                 />
@@ -294,7 +293,7 @@ const [editingTask, setEditingTask] = useState(null);
                 <Select
                   value={formData.cropId}
                   onChange={(e) => setFormData({...formData, cropId: e.target.value})}
-                  options={getFilteredCrops().map(crop => ({ value: crop.Id.toString(), label: `${crop.name} - ${crop.variety}` }))}
+options={getFilteredCrops().map(crop => ({ value: crop.Id.toString(), label: `${crop.Name} - ${crop.variety}` }))}
                   placeholder="Select a crop"
                 />
               </FormField>
