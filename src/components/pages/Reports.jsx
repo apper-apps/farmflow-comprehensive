@@ -11,26 +11,137 @@ import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
 import transactionService from "@/services/api/transactionService";
+import expenseSummaryService from "@/services/api/expenseSummaryService";
+import incomeSummaryService from "@/services/api/incomeSummaryService";
 
 const Reports = () => {
   const [transactions, setTransactions] = useState([]);
+  const [summaries, setSummaries] = useState({ expenses: [], income: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [period, setPeriod] = useState("monthly");
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-
-  const loadData = async () => {
+  const [generateSummaries, setGenerateSummaries] = useState(false);
+  const [summaryPeriod, setSummaryPeriod] = useState("monthly");
+const loadData = async () => {
     try {
       setLoading(true);
       setError("");
       
-      const transactionsData = await transactionService.getAll();
+      const [transactionsData, expenseSummariesData, incomeSummariesData] = await Promise.all([
+        transactionService.getAll(),
+        expenseSummaryService.getAll(),
+        incomeSummaryService.getAll()
+      ]);
+      
       setTransactions(transactionsData);
+      setSummaries({
+        expenses: expenseSummariesData,
+        income: incomeSummariesData
+      });
     } catch (err) {
       setError(err.message);
-      toast.error("Failed to load transaction data");
+      toast.error("Failed to load financial data");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const generateSummaryData = async () => {
+    try {
+      setGenerateSummaries(true);
+      const yearTransactions = getTransactionsForYear(selectedYear);
+      
+      if (summaryPeriod === "monthly") {
+        // Generate monthly summaries
+        for (let month = 0; month < 12; month++) {
+          const startDate = format(startOfMonth(new Date(selectedYear, month, 1)), 'yyyy-MM-dd');
+          const endDate = format(endOfMonth(new Date(selectedYear, month, 1)), 'yyyy-MM-dd');
+          
+          const monthTransactions = yearTransactions.filter(t => {
+            const transactionDate = parseISO(t.date);
+            return transactionDate.getMonth() === month;
+          });
+          
+          const expenseTotal = monthTransactions
+            .filter(t => t.type === 'expense')
+            .reduce((sum, t) => sum + t.amount, 0);
+          
+          const incomeTotal = monthTransactions
+            .filter(t => t.type === 'income')
+            .reduce((sum, t) => sum + t.amount, 0);
+          
+          if (expenseTotal > 0) {
+            await expenseSummaryService.create({
+              period_type: "monthly",
+              total_amount: expenseTotal,
+              period_start_date: startDate,
+              period_end_date: endDate
+            });
+          }
+          
+          if (incomeTotal > 0) {
+            await incomeSummaryService.create({
+              period_type: "monthly",
+              total_amount: incomeTotal,
+              period_start_date: startDate,
+              period_end_date: endDate
+            });
+          }
+        }
+      } else if (summaryPeriod === "seasonal") {
+        // Generate seasonal summaries
+        const seasons = [
+          { name: "Spring", months: [0, 1, 2] },
+          { name: "Summer", months: [3, 4, 5] },
+          { name: "Fall", months: [6, 7, 8] },
+          { name: "Winter", months: [9, 10, 11] }
+        ];
+        
+        for (const season of seasons) {
+          const seasonTransactions = yearTransactions.filter(t => {
+            const month = parseISO(t.date).getMonth();
+            return season.months.includes(month);
+          });
+          
+          const startDate = format(startOfQuarter(new Date(selectedYear, season.months[0], 1)), 'yyyy-MM-dd');
+          const endDate = format(endOfQuarter(new Date(selectedYear, season.months[2], 1)), 'yyyy-MM-dd');
+          
+          const expenseTotal = seasonTransactions
+            .filter(t => t.type === 'expense')
+            .reduce((sum, t) => sum + t.amount, 0);
+          
+          const incomeTotal = seasonTransactions
+            .filter(t => t.type === 'income')
+            .reduce((sum, t) => sum + t.amount, 0);
+          
+          if (expenseTotal > 0) {
+            await expenseSummaryService.create({
+              period_type: "seasonal",
+              total_amount: expenseTotal,
+              period_start_date: startDate,
+              period_end_date: endDate
+            });
+          }
+          
+          if (incomeTotal > 0) {
+            await incomeSummaryService.create({
+              period_type: "seasonal",
+              total_amount: incomeTotal,
+              period_start_date: startDate,
+              period_end_date: endDate
+            });
+          }
+        }
+      }
+      
+      toast.success("Financial summaries generated successfully");
+      await loadData(); // Reload data to show new summaries
+    } catch (err) {
+      toast.error("Failed to generate summaries");
+      console.error("Error generating summaries:", err);
+    } finally {
+      setGenerateSummaries(false);
     }
   };
 
@@ -79,30 +190,34 @@ const Reports = () => {
     return monthlyData;
   };
 
-  // Group transactions by quarter
-  const getQuarterlyData = () => {
+// Group transactions by quarter/season
+  const getSeasonalData = () => {
     const yearTransactions = getTransactionsForYear(selectedYear);
-    const quarterlyData = {
-      'Q1': { income: 0, expenses: 0 },
-      'Q2': { income: 0, expenses: 0 },
-      'Q3': { income: 0, expenses: 0 },
-      'Q4': { income: 0, expenses: 0 }
+    const seasonalData = {
+      'Spring': { income: 0, expenses: 0 },
+      'Summer': { income: 0, expenses: 0 },
+      'Fall': { income: 0, expenses: 0 },
+      'Winter': { income: 0, expenses: 0 }
     };
     
     yearTransactions.forEach(transaction => {
       const date = parseISO(transaction.date);
       const month = date.getMonth();
-      const quarter = Math.floor(month / 3) + 1;
-      const quarterKey = `Q${quarter}`;
+      
+      let season;
+      if (month >= 0 && month <= 2) season = 'Spring';
+      else if (month >= 3 && month <= 5) season = 'Summer';
+      else if (month >= 6 && month <= 8) season = 'Fall';
+      else season = 'Winter';
       
       if (transaction.type === 'income') {
-        quarterlyData[quarterKey].income += transaction.amount;
+        seasonalData[season].income += transaction.amount;
       } else {
-        quarterlyData[quarterKey].expenses += transaction.amount;
+        seasonalData[season].expenses += transaction.amount;
       }
     });
     
-    return quarterlyData;
+    return seasonalData;
   };
 
   // Get category breakdown
@@ -141,9 +256,10 @@ const Reports = () => {
     return totals;
   };
 
-  // Prepare chart data
+// Prepare chart data
   const getChartData = () => {
-    const data = period === 'monthly' ? getMonthlyData() : getQuarterlyData();
+    const data = period === 'monthly' ? getMonthlyData() : 
+                 period === 'seasonal' ? getSeasonalData() : getSeasonalData();
     const categories = Object.keys(data);
     const incomeData = categories.map(cat => data[cat].income);
     const expenseData = categories.map(cat => data[cat].expenses);
@@ -245,14 +361,13 @@ const Reports = () => {
           <h1 className="text-3xl font-bold text-gray-900">Financial Reports</h1>
           <p className="text-gray-600 mt-1">Comprehensive financial analysis and insights</p>
         </motion.div>
-        
-        <div className="flex items-center gap-4">
+<div className="flex items-center gap-4">
           <Select
             value={period}
             onChange={(e) => setPeriod(e.target.value)}
             options={[
               { value: "monthly", label: "Monthly" },
-              { value: "quarterly", label: "Quarterly" }
+              { value: "seasonal", label: "Seasonal" }
             ]}
           />
           <Select
@@ -260,6 +375,34 @@ const Reports = () => {
             onChange={(e) => setSelectedYear(parseInt(e.target.value))}
             options={availableYears.map(year => ({ value: year.toString(), label: year.toString() }))}
           />
+          <div className="flex items-center gap-2">
+            <Select
+              value={summaryPeriod}
+              onChange={(e) => setSummaryPeriod(e.target.value)}
+              options={[
+                { value: "monthly", label: "Monthly Summaries" },
+                { value: "seasonal", label: "Seasonal Summaries" }
+              ]}
+            />
+            <Button
+              onClick={generateSummaryData}
+              disabled={generateSummaries}
+              variant="outline"
+              size="sm"
+            >
+              {generateSummaries ? (
+                <>
+                  <ApperIcon name="Loader2" className="animate-spin mr-2" size={16} />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <ApperIcon name="BarChart3" className="mr-2" size={16} />
+                  Generate Summary
+                </>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -293,8 +436,8 @@ const Reports = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-xl p-6 shadow-lg"
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
-            Income vs Expenses - {period === 'monthly' ? 'Monthly' : 'Quarterly'} ({selectedYear})
+<h3 className="text-xl font-bold text-gray-900 mb-4">
+            Income vs Expenses - {period === 'monthly' ? 'Monthly' : 'Seasonal'} ({selectedYear})
           </h3>
           <Chart
             options={lineChartOptions}
@@ -337,9 +480,9 @@ const Reports = () => {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-xl shadow-lg overflow-hidden"
       >
-        <div className="p-6 border-b border-gray-200">
+<div className="p-6 border-b border-gray-200">
           <h3 className="text-xl font-bold text-gray-900">
-            {period === 'monthly' ? 'Monthly' : 'Quarterly'} Breakdown ({selectedYear})
+            {period === 'monthly' ? 'Monthly' : 'Seasonal'} Breakdown ({selectedYear})
           </h3>
         </div>
         <div className="overflow-x-auto">
@@ -360,8 +503,8 @@ const Reports = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {Object.entries(period === 'monthly' ? getMonthlyData() : getQuarterlyData()).map(([period, data]) => (
+<tbody className="bg-white divide-y divide-gray-200">
+              {Object.entries(period === 'monthly' ? getMonthlyData() : getSeasonalData()).map(([period, data]) => (
                 <tr key={period} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {period}
