@@ -9,12 +9,13 @@ const Sidebar = () => {
   const location = useLocation();
   const { logout } = useContext(AuthContext);
 
-  const menuItems = [
+const menuItems = [
     { path: "/", label: "Dashboard", icon: "LayoutDashboard" },
     { path: "/farms", label: "Farms", icon: "MapPin" },
     { path: "/crops", label: "Crops", icon: "Sprout" },
     { path: "/tasks", label: "Tasks", icon: "CheckSquare" },
     { path: "/finance", label: "Finance", icon: "DollarSign" },
+    { path: "/reports", label: "Reports", icon: "BarChart3" },
     { path: "/weather", label: "Weather", icon: "CloudSun" },
   ];
 
